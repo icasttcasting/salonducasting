@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iCastt — Salon du Casting Paris</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D98A;
+    --gold-dim: #7A6129;
+    --black: #0D0D0D;
+    --surface: #141414;
+    --surface2: #1E1E1E;
+    --surface3: #262626;
+    --border: rgba(201,168,76,0.18);
+    --border-hover: rgba(201,168,76,0.45);
+    --text: #F0EDE6;
+    --text-muted: #8A867D;
+    --text-dim: #5A574F;
+    --red: #E05A5A;
+    --green: #4CAF7D;
+  }
+
+  html { background: var(--black); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+
+  body { min-height: 100vh; }
+
+  /* ── HEADER ── */
+  .site-header {
+    border-bottom: 0.5px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,13,13,0.92);
+    backdrop-filter: blur(12px);
+  }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 22px; letter-spacing: 0.04em; color: var(--gold); }
+  .logo span { color: var(--text-muted); font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 300; display: block; margin-top: -2px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .header-date { font-size: 12px; color: var(--text-muted); letter-spacing: 0.08em; text-align: right; }
+  .header-date strong { display: block; color: var(--gold); font-weight: 500; font-size: 14px; }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 5rem 2rem 4rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.25rem;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after { content: ''; flex: 1; max-width: 60px; height: 0.5px; background: var(--gold-dim); }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(36px, 6vw, 58px); line-height: 1.05; color: var(--text); margin-bottom: 1rem; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 440px; margin: 0 auto 2rem; }
+  .hero-meta { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+  .hero-meta-item { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 7px; }
+  .hero-meta-item svg { opacity: 0.5; }
+
+  /* ── MAIN CONTAINER ── */
+  .container { max-width: 700px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+  .section-num { color: var(--gold); font-size: 10px; }
+
+  /* ── OFFRES ── */
+  .offres-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 2.5rem; }
+  @media (max-width: 520px) { .offres-grid { grid-template-columns: 1fr; } }
+
+  .offre-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .offre-card:hover { border-color: var(--border-hover); background: var(--surface2); }
+  .offre-card.selected {
+    border: 1.5px solid var(--gold);
+    background: var(--surface2);
+  }
+  .offre-card.selected::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 12px;
+    background: rgba(201,168,76,0.04);
+    pointer-events: none;
+  }
+
+  .offre-badge {
+    display: inline-block;
+    font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px;
+    margin-bottom: 0.75rem;
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    border: 0.5px solid rgba(201,168,76,0.3);
+  }
+  .offre-badge.free { background: rgba(255,255,255,0.06); color: var(--text-muted); border-color: rgba(255,255,255,0.1); }
+  .offre-badge.economy { background: rgba(76,175,125,0.12); color: var(--green); border-color: rgba(76,175,125,0.3); }
+
+  .offre-name { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .offre-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; }
+  .offre-price { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); }
+  .offre-price sup { font-size: 14px; font-family: 'DM Sans', sans-serif; font-weight: 400; vertical-align: top; margin-top: 8px; display: inline-block; }
+  .offre-price .free-label { font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 300; color: var(--text-muted); }
+
+  .offre-check {
+    position: absolute; top: 12px; right: 12px;
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    background: var(--surface3);
+  }
+  .offre-card.selected .offre-check {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .offre-check svg { opacity: 0; transition: opacity 0.2s; }
+  .offre-card.selected .offre-check svg { opacity: 1; }
+
+  /* ── FORM ── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 2.5rem; }
+  @media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
+  .field label .req { color: var(--gold); margin-left: 2px; }
+  .field .hint { font-size: 11px; color: var(--text-dim); margin-top: -3px; }
+
+  .field input {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14px; font-family: 'DM Sans', sans-serif; font-weight: 300;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+  }
+  .field input::placeholder { color: var(--text-dim); }
+  .field input:hover { border-color: var(--border-hover); }
+  .field input:focus { border-color: var(--gold); background: var(--surface2); box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
+  .field input.error { border-color: var(--red); }
+
+  .field-icon { position: relative; }
+  .field-icon input { padding-left: 38px; }
+  .field-icon .icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--text-dim); font-size: 14px; pointer-events: none;
+  }
+
+  /* ── SUMMARY ── */
+  .summary {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+  .summary.visible { display: block; }
+  .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); padding: 5px 0; }
+  .summary-row.total { border-top: 0.5px solid var(--border); margin-top: 8px; padding-top: 12px; font-size: 16px; font-weight: 500; color: var(--text); }
+  .summary-row.total .val { color: var(--gold); font-family: 'DM Serif Display', serif; font-size: 20px; }
+
+  /* ── CTA ── */
+  .cta-wrap { position: relative; }
+  .cta-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--gold);
+    color: var(--black);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .cta-btn:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
+  .cta-btn:active:not(:disabled) { transform: translateY(0); }
+  .cta-btn:disabled { background: var(--surface3); color: var(--text-dim); cursor: not-allowed; transform: none; }
+  .cta-btn .spinner {
+    width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.2);
+    border-top-color: var(--black); border-radius: 50%;
+    animation: spin 0.7s linear infinite; display: none;
+  }
+  .cta-btn.loading .spinner { display: block; }
+  .cta-btn.loading .btn-text { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-msg { font-size: 12px; color: var(--red); margin-top: 8px; text-align: center; display: none; }
+  .error-msg.visible { display: block; }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none; text-align: center; padding: 4rem 2rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .success-screen.visible { display: block; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  .success-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(76,175,125,0.1); border: 0.5px solid rgba(76,175,125,0.3);
+    margin: 0 auto 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .success-screen h2 { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); margin-bottom: 0.75rem; }
+  .success-screen p { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 380px; margin: 0 auto 0.5rem; }
+  .success-detail {
+    margin-top: 1.5rem;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    display: inline-block; text-align: left;
+    font-size: 13px; color: var(--text-muted); line-height: 1.8;
+    min-width: 260px;
+  }
+  .success-detail strong { color: var(--gold); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 0.5px solid var(--border);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 11px; color: var(--text-dim); letter-spacing: 0.06em;
+  }
+  .site-footer a { color: var(--gold-dim); text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  .fade-in { animation: fadeIn 0.6s ease both; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  .offre-card { animation: fadeIn 0.5s ease both; }
+  .offre-card:nth-child(1) { animation-delay: 0.05s; }
+  .offre-card:nth-child(2) { animation-delay: 0.10s; }
+  .offre-card:nth-child(3) { animation-delay: 0.15s; }
+  .offre-card:nth-child(4) { animation-delay: 0.20s; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">iCastt<span>Salon du Casting</span></div>
+  <div class="header-date">
+    <strong>14 juin 2026</strong>
+    Paris — Île-de-France
+  </div>
+</header>
+
+<section class="hero fade-in">
+  <p class="hero-eyebrow">Inscription officielle</p>
+  <h1>Le Salon du<br><em>Casting Paris</em></h1>
+  <p class="hero-sub">Rencontrez les agences, boostez votre profil et lancez votre carrière dans le monde du casting et de la mode.</p>
+  <div class="hero-meta">
+    <span class="hero-meta-item">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M8 2v3M16 2v3M3 8h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+      14 juin 2026
+    </span>
+    <span class="hero-meta-item">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Paris, Île-de-France
+    </span>
+    <span class="hero-meta-item">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      10h00 – 19h00
+    </span>
+  </div>
+</section>
+
+<main class="container">
+
+  <div id="form-section">
+
+    <!-- ÉTAPE 1 — OFFRE -->
+    <p class="section-title"><span class="section-num">01</span> Choisir une formule</p>
+
+    <div class="offres-grid">
+
+      <div class="offre-card" data-offre="Acces Decouverte - 0E" data-prix="0" onclick="selectOffre(this)">
+        <div class="offre-check">
+          <svg width="10" height="8" fill="none" stroke="#0D0D0D" stroke-width="2.5" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6"/></svg>
+        </div>
+        <div class="offre-badge free">Entrée libre</div>
+        <div class="offre-name">Accès Découverte</div>
+        <div class="offre-desc">Visitez le salon, rencontrez les agences et assistez aux conférences ouvertes.</div>
+        <div class="offre-price"><span class="free-label">Gratuit</span></div>
+      </div>
+
+      <div class="offre-card" data-offre="Bootcamp - 139E" data-prix="139" onclick="selectOffre(this)">
+        <div class="offre-check">
+          <svg width="10" height="8" fill="none" stroke="#0D0D0D" stroke-width="2.5" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6"/></svg>
+        </div>
+        <div class="offre-badge">Le plus choisi</div>
+        <div class="offre-name">Bootcamp</div>
+        <div class="offre-desc">Formation intensive, coaching individuel et accès aux castings privés du salon.</div>
+        <div class="offre-price"><sup>€</sup>139</div>
+      </div>
+
+      <div class="offre-card" data-offre="Shooting Photo - 89E" data-prix="89" onclick="selectOffre(this)">
+        <div class="offre-check">
+          <svg width="10" height="8" fill="none" stroke="#0D0D0D" stroke-width="2.5" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6"/></svg>
+        </div>
+        <div class="offre-badge" style="visibility:hidden">—</div>
+        <div class="offre-name">Shooting Photo</div>
+        <div class="offre-desc">30 min avec un photographe professionnel + 5 photos retouchées livrées sous 48h.</div>
+        <div class="offre-price"><sup>€</sup>89</div>
+      </div>
+
+      <div class="offre-card" data-offre="Combo Complet - 199E" data-prix="199" onclick="selectOffre(this)">
+        <div class="offre-check">
+          <svg width="10" height="8" fill="none" stroke="#0D0D0D" stroke-width="2.5" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6"/></svg>
+        </div>
+        <div class="offre-badge economy">Économie −29 €</div>
+        <div class="offre-name">Combo Complet</div>
+        <div class="offre-desc">Bootcamp + Shooting photo réunis — le pack idéal pour se lancer.</div>
+        <div class="offre-price"><sup>€</sup>199</div>
+      </div>
+
+    </div>
+
+    <!-- ÉTAPE 2 — COORDONNÉES -->
+    <p class="section-title"><span class="section-num">02</span> Vos coordonnées</p>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Prénom <span class="req">*</span></label>
+        <input type="text" id="f-prenom" placeholder="Léa" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label>Nom <span class="req">*</span></label>
+        <input type="text" id="f-nom" placeholder="Dupont" autocomplete="family-name">
+      </div>
+      <div class="field full">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="f-email" placeholder="lea@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>WhatsApp <span class="req">*</span></label>
+        <p class="hint">Prioritaire — contact direct</p>
+        <div class="field-icon">
+          <span class="icon">📱</span>
+          <input type="tel" id="f-wa" placeholder="+33 6 00 00 00 00" autocomplete="tel">
+        </div>
+      </div>
+      <div class="field">
+        <label>Instagram <span class="req">*</span></label>
+        <p class="hint">Votre compte public</p>
+        <div class="field-icon">
+          <span class="icon">@</span>
+          <input type="text" id="f-insta" placeholder="votre_pseudo">
+        </div>
+      </div>
+    </div>
+
+    <!-- RÉCAPITULATIF -->
+    <div class="summary" id="summary">
+      <div class="summary-row"><span>Formule sélectionnée</span><span id="s-offre">—</span></div>
+      <div class="summary-row total"><span>Total</span><span class="val" id="s-total">0 €</span></div>
+    </div>
+
+    <!-- BOUTON -->
+    <div class="cta-wrap">
+      <button class="cta-btn" id="reserve-btn" onclick="submitForm()" disabled>
+        <div class="spinner"></div>
+        <span class="btn-text">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:6px"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+          Confirmer ma réservation
+        </span>
+      </button>
+      <p class="error-msg" id="error-msg">Merci de remplir tous les champs et de choisir une formule.</p>
+    </div>
+
+    <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:1rem;letter-spacing:0.04em;">
+      Vos données restent privées et ne sont jamais revendues. Confirmation par email immédiate.
+    </p>
+
+  </div>
+
+  <!-- SUCCÈS -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">
+      <svg width="28" height="28" fill="none" stroke="#4CAF7D" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+    </div>
+    <h2>Réservation confirmée !</h2>
+    <p>Un email de confirmation vous a été envoyé. Montrez-le à l'entrée du salon.</p>
+    <p id="success-wa-msg" style="display:none;color:var(--gold);margin-top:0.5rem;">Notre équipe vous contactera sur WhatsApp très prochainement.</p>
+    <div class="success-detail" id="success-detail"></div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  © 2026 iCastt — Salon du Casting Paris &nbsp;·&nbsp; <a href="#">Mentions légales</a> &nbsp;·&nbsp; <a href="#">Contact</a>
+</footer>
+
+<script>
+  // ══════════════════════════════════════════════
+  // ⚠️  REMPLACE CETTE URL PAR TON URL APPS SCRIPT
+  const SCRIPT_URL = 'REMPLACE_PAR_TON_URL_APPS_SCRIPT';
+  // ══════════════════════════════════════════════
+
+  let selectedOffer = null;
+  let selectedPrix = 0;
+
+  function selectOffre(card) {
+    document.querySelectorAll('.offre-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedOffer = card.dataset.offre;
+    selectedPrix = parseInt(card.dataset.prix);
+    document.getElementById('s-offre').textContent = card.querySelector('.offre-name').textContent;
+    document.getElementById('s-total').textContent = selectedPrix === 0 ? 'Gratuit' : selectedPrix + ' €';
+    document.getElementById('summary').classList.add('visible');
+    checkForm();
+  }
+
+  function checkForm() {
+    const ok = selectedOffer &&
+      document.getElementById('f-prenom').value.trim() &&
+      document.getElementById('f-nom').value.trim() &&
+      document.getElementById('f-email').value.trim() &&
+      document.getElementById('f-wa').value.trim() &&
+      document.getElementById('f-insta').value.trim();
+    document.getElementById('reserve-btn').disabled = !ok;
+  }
+
+  document.querySelectorAll('input').forEach(i => i.addEventListener('input', checkForm));
+
+  async function submitForm() {
+    const prenom = document.getElementById('f-prenom').value.trim();
+    const nom = document.getElementById('f-nom').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const wa = document.getElementById('f-wa').value.trim();
+    const insta = document.getElementById('f-insta').value.trim();
+
+    if (!selectedOffer || !prenom || !nom || !email || !wa || !insta) {
+      document.getElementById('error-msg').classList.add('visible');
+      return;
+    }
+    document.getElementById('error-msg').classList.remove('visible');
+
+    const btn = document.getElementById('reserve-btn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    const formData = { prenom, nom, email, whatsapp: wa, instagram: insta, offre: selectedOffer };
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+    } catch (e) {
+      // no-cors: fetch réussit quand même côté Apps Script
+    }
+
+    const payant = selectedPrix > 0;
+    document.getElementById('success-detail').innerHTML =
+      `<strong>Formule :</strong> ${document.querySelector('.offre-card.selected .offre-name').textContent}<br>` +
+      `<strong>Nom :</strong> ${prenom} ${nom}<br>` +
+      `<strong>Email :</strong> ${email}<br>` +
+      `<strong>WhatsApp :</strong> ${wa}`;
+    if (payant) document.getElementById('success-wa-msg').style.display = 'block';
+
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('success-screen').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
