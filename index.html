@@ -4,492 +4,1052 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>iCastt — Salon du Casting Paris</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1A1AFF;
+  --blue2:#2B2BFF;
+  --purple:#7B2FFF;
+  --purple2:#9B4FFF;
+  --mid:#4B1FCC;
+  --bg:#07071A;
+  --bg2:#0F0F28;
+  --bg3:#16163A;
+  --card:rgba(255,255,255,0.05);
+  --card2:rgba(255,255,255,0.09);
+  --border:rgba(255,255,255,0.08);
+  --border2:rgba(255,255,255,0.18);
+  --white:#FFFFFF;
+  --off:#C8C8F0;
+  --muted:#7070A0;
+  --dim:#4A4A70;
+  --success:#00E5A0;
+  --warn:#FFB830;
+}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);font-size:14px;overflow-x:hidden}
+button,input{font-family:'Inter',sans-serif}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--mid);border-radius:2px}
 
-  :root {
-    --gold: #C9A84C;
-    --gold-light: #F0D98A;
-    --gold-dim: #7A6129;
-    --black: #0D0D0D;
-    --surface: #141414;
-    --surface2: #1E1E1E;
-    --surface3: #262626;
-    --border: rgba(201,168,76,0.18);
-    --border-hover: rgba(201,168,76,0.45);
-    --text: #F0EDE6;
-    --text-muted: #8A867D;
-    --text-dim: #5A574F;
-    --red: #E05A5A;
-    --green: #4CAF7D;
-  }
+/* ══ CINEMATIC BUTTON ══ */
+.cine-btn{
+  position:relative;overflow:hidden;cursor:pointer;border:none;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Inter',sans-serif;font-weight:600;letter-spacing:.04em;
+  transition:transform .3s cubic-bezier(.23,1,.32,1),box-shadow .3s;
+}
+.cine-btn::before{
+  content:'';position:absolute;top:50%;left:50%;
+  width:0;height:0;border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  transform:translate(-50%,-50%);
+  transition:width .6s ease,height .6s ease,opacity .6s ease;
+  opacity:0;pointer-events:none;
+}
+.cine-btn:hover::before{width:300px;height:300px;opacity:1}
+.cine-btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.12) 50%,transparent 60%);
+  transform:translateX(-100%);transition:transform .5s ease;
+}
+.cine-btn:hover::after{transform:translateX(100%)}
+.cine-btn:hover{transform:translateY(-2px)}
+.cine-btn:active{transform:scale(0.97)}
 
-  html { background: var(--black); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+.btn-primary{
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  color:white;border-radius:12px;padding:13px 28px;font-size:14px;
+  box-shadow:0 4px 24px rgba(123,47,255,0.35);
+}
+.btn-primary:hover{box-shadow:0 8px 32px rgba(123,47,255,0.5)}
+.btn-secondary{
+  background:rgba(255,255,255,0.07);
+  border:1px solid var(--border2);
+  color:var(--off);border-radius:12px;padding:12px 22px;font-size:13px;
+}
+.btn-secondary:hover{background:rgba(255,255,255,0.12)}
+.btn-ghost{
+  background:transparent;border:1px solid var(--border);
+  color:var(--muted);border-radius:10px;padding:8px 16px;font-size:12px;
+}
+.btn-ghost:hover{border-color:var(--border2);color:var(--off)}
+.btn-success{
+  background:linear-gradient(135deg,#00C580,#00E5A0);
+  color:#001A10;border-radius:12px;padding:13px 28px;font-size:14px;font-weight:700;
+  box-shadow:0 4px 20px rgba(0,229,160,0.3);
+}
+.btn-success:hover{box-shadow:0 8px 30px rgba(0,229,160,0.45)}
 
-  body { min-height: 100vh; }
+/* ══ LAYOUT ══ */
+.app{display:flex;flex-direction:column;min-height:100vh}
 
-  /* ── HEADER ── */
-  .site-header {
-    border-bottom: 0.5px solid var(--border);
-    padding: 1.25rem 2rem;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(13,13,13,0.92);
-    backdrop-filter: blur(12px);
-  }
-  .logo { font-family: 'DM Serif Display', serif; font-size: 22px; letter-spacing: 0.04em; color: var(--gold); }
-  .logo span { color: var(--text-muted); font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 300; display: block; margin-top: -2px; letter-spacing: 0.12em; text-transform: uppercase; }
-  .header-date { font-size: 12px; color: var(--text-muted); letter-spacing: 0.08em; text-align: right; }
-  .header-date strong { display: block; color: var(--gold); font-weight: 500; font-size: 14px; }
+/* ══ TOPBAR ══ */
+.topbar{
+  height:58px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  background:rgba(7,7,26,0.8);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+}
+.tb-logo{display:flex;align-items:center;gap:10px}
+.tb-logo-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.tb-logo-mark::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,0.15));pointer-events:none}
+.tb-logo-mark svg{width:18px;height:18px;fill:none;stroke:white;stroke-width:2}
+.tb-logo-text{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.06em}
+.tb-logo-sub{font-size:8px;letter-spacing:.25em;color:var(--muted);display:block;margin-top:-2px}
+.tb-center{display:flex;gap:28px}
+.tb-link{font-size:12px;color:var(--muted);letter-spacing:.05em;transition:color .2s;display:flex;align-items:center;gap:6px}
+.tb-link:hover{color:var(--white)}
+.tb-link svg{width:14px;height:14px}
+.tb-link.active{color:var(--white)}
+.tb-right{display:flex;align-items:center;gap:12px}
+.tb-notif{
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--border);
+  background:var(--card);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;position:relative;
+}
+.tb-notif:hover{border-color:var(--border2);background:var(--card2)}
+.tb-notif svg{width:16px;height:16px;stroke:var(--muted)}
+.tb-notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--warn);border-radius:50%;border:1.5px solid var(--bg)}
+.tb-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;letter-spacing:.02em;
+  border:1.5px solid rgba(255,255,255,0.2);cursor:pointer;
+}
+@media(max-width:768px){.tb-center{display:none}}
 
-  /* ── HERO ── */
-  .hero {
-    text-align: center;
-    padding: 5rem 2rem 4rem;
-    max-width: 640px;
-    margin: 0 auto;
-  }
-  .hero-eyebrow {
-    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 1.25rem;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-  }
-  .hero-eyebrow::before, .hero-eyebrow::after { content: ''; flex: 1; max-width: 60px; height: 0.5px; background: var(--gold-dim); }
-  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(36px, 6vw, 58px); line-height: 1.05; color: var(--text); margin-bottom: 1rem; }
-  .hero h1 em { font-style: italic; color: var(--gold); }
-  .hero-sub { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 440px; margin: 0 auto 2rem; }
-  .hero-meta { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
-  .hero-meta-item { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 7px; }
-  .hero-meta-item svg { opacity: 0.5; }
+/* ══ BODY ══ */
+.body{display:flex;flex:1}
 
-  /* ── MAIN CONTAINER ── */
-  .container { max-width: 700px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+/* ══ SIDEBAR ══ */
+.sidebar{
+  width:256px;flex-shrink:0;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+}
+/* event banner */
+.sb-event{
+  margin:14px;border-radius:14px;overflow:hidden;
+  min-height:148px;position:relative;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--mid) 50%,var(--purple) 100%);
+  cursor:pointer;
+}
+.sb-event-art{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.1}
+.sb-event-art svg{width:90px;height:90px;fill:white}
+.sb-event-scan{position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px)}
+.sb-event-vig{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 55%)}
+.sb-event-content{position:absolute;bottom:0;left:0;right:0;padding:12px}
+.sb-event-tag{font-size:8px;letter-spacing:.2em;color:rgba(255,255,255,.55);margin-bottom:4px}
+.sb-event-title{font-size:13px;font-weight:700;color:white;line-height:1.3}
+.sb-event-loc{font-size:10px;color:rgba(255,255,255,.5);margin-top:4px;display:flex;align-items:center;gap:4px}
+.sb-event-loc svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2}
 
-  /* ── SECTION TITLES ── */
-  .section-title {
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--text-dim); margin-bottom: 1.25rem;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .section-title::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
-  .section-num { color: var(--gold); font-size: 10px; }
+/* action pills */
+.sb-pills{display:flex;gap:6px;padding:0 14px 14px;flex-wrap:wrap}
+.sb-pill{
+  display:flex;align-items:center;gap:5px;
+  padding:6px 12px;border-radius:100px;
+  background:var(--card);border:1px solid var(--border);
+  font-size:11px;color:var(--off);cursor:pointer;
+  transition:all .2s;
+}
+.sb-pill:hover{background:var(--card2);border-color:var(--border2)}
+.sb-pill svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
 
-  /* ── OFFRES ── */
-  .offres-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 2.5rem; }
-  @media (max-width: 520px) { .offres-grid { grid-template-columns: 1fr; } }
+/* nav items */
+.sb-sep{height:1px;background:var(--border);margin:0 14px 8px}
+.sb-nav{flex:1;padding:0 8px 16px}
+.sb-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;border-radius:10px;cursor:pointer;
+  transition:all .2s;margin-bottom:2px;
+}
+.sb-item:hover{background:var(--card)}
+.sb-item.active{background:rgba(26,26,255,0.15);border:1px solid rgba(26,26,255,0.25)}
+.sb-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sb-label{font-size:13px;color:var(--off)}
+.sb-item.active .sb-label{color:white;font-weight:500}
+.sb-badge{margin-left:auto;font-size:10px;padding:2px 7px;border-radius:20px;background:linear-gradient(135deg,var(--blue),var(--purple));color:white;font-weight:600}
 
-  .offre-card {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: 12px;
-    padding: 1.25rem;
-    cursor: pointer;
-    position: relative;
-    transition: border-color 0.2s, background 0.2s;
-    user-select: none;
-  }
-  .offre-card:hover { border-color: var(--border-hover); background: var(--surface2); }
-  .offre-card.selected {
-    border: 1.5px solid var(--gold);
-    background: var(--surface2);
-  }
-  .offre-card.selected::before {
-    content: '';
-    position: absolute; inset: 0;
-    border-radius: 12px;
-    background: rgba(201,168,76,0.04);
-    pointer-events: none;
-  }
+@media(max-width:900px){.sidebar{display:none}}
 
-  .offre-badge {
-    display: inline-block;
-    font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 3px 9px; border-radius: 20px;
-    margin-bottom: 0.75rem;
-    background: rgba(201,168,76,0.12);
-    color: var(--gold);
-    border: 0.5px solid rgba(201,168,76,0.3);
-  }
-  .offre-badge.free { background: rgba(255,255,255,0.06); color: var(--text-muted); border-color: rgba(255,255,255,0.1); }
-  .offre-badge.economy { background: rgba(76,175,125,0.12); color: var(--green); border-color: rgba(76,175,125,0.3); }
+/* ══ MAIN ══ */
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow-y:auto}
 
-  .offre-name { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
-  .offre-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; }
-  .offre-price { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); }
-  .offre-price sup { font-size: 14px; font-family: 'DM Sans', sans-serif; font-weight: 400; vertical-align: top; margin-top: 8px; display: inline-block; }
-  .offre-price .free-label { font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 300; color: var(--text-muted); }
+/* tabs */
+.tabs{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;padding:0 24px;flex-shrink:0;overflow-x:auto;
+}
+.tab{
+  padding:16px 18px;font-size:13px;color:var(--muted);
+  border-bottom:2px solid transparent;cursor:pointer;
+  display:flex;align-items:center;gap:7px;transition:all .2s;white-space:nowrap;
+}
+.tab:hover{color:var(--off)}
+.tab.active{color:white;border-bottom-color:var(--blue)}
+.tab svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.5}
 
-  .offre-check {
-    position: absolute; top: 12px; right: 12px;
-    width: 20px; height: 20px; border-radius: 50%;
-    border: 0.5px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-    background: var(--surface3);
-  }
-  .offre-card.selected .offre-check {
-    background: var(--gold);
-    border-color: var(--gold);
-  }
-  .offre-check svg { opacity: 0; transition: opacity 0.2s; }
-  .offre-card.selected .offre-check svg { opacity: 1; }
+/* main header */
+.main-hdr{
+  padding:20px 24px;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--mid) 55%,var(--purple) 100%);
+  display:flex;align-items:center;gap:16px;
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.main-hdr::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px)}
+.main-hdr::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05)}
+.hdr-back{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;flex-shrink:0;color:white;font-size:16px;
+  position:relative;z-index:1;
+}
+.hdr-back:hover{background:rgba(255,255,255,.25)}
+.hdr-icon{
+  width:50px;height:50px;border-radius:14px;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  position:relative;z-index:1;flex-shrink:0;
+}
+.hdr-text{position:relative;z-index:1}
+.hdr-title{font-size:20px;font-weight:700;color:white;line-height:1.2}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
 
-  /* ── FORM ── */
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 2.5rem; }
-  @media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+/* stepper */
+.stepper{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:18px 24px;display:flex;align-items:center;flex-shrink:0;
+}
+.step-item{display:flex;align-items:center;gap:10px}
+.step-conn{flex:1;height:1.5px;background:var(--border);margin:0 10px;transition:background .4s}
+.step-conn.done{background:var(--success)}
+.step-circle{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;flex-shrink:0;
+  border:1.5px solid var(--border);background:var(--bg3);color:var(--muted);
+  transition:all .35s;
+}
+.step-circle.active{
+  border-color:var(--blue);
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  color:white;box-shadow:0 0 16px rgba(26,26,255,.4);
+}
+.step-circle.done{border-color:var(--success);background:var(--success);color:#001A10}
+.step-label{font-size:12px;color:var(--muted);font-weight:400;white-space:nowrap}
+.step-label.active{color:white;font-weight:600}
+.step-label.done{color:var(--success)}
+@media(max-width:600px){.step-label{display:none}.step-conn{min-width:16px}}
 
-  .field { display: flex; flex-direction: column; gap: 7px; }
-  .field.full { grid-column: 1 / -1; }
-  .field label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
-  .field label .req { color: var(--gold); margin-left: 2px; }
-  .field .hint { font-size: 11px; color: var(--text-dim); margin-top: -3px; }
+/* ══ CONTENT ══ */
+.content{display:flex;gap:20px;padding:24px;align-items:flex-start;flex:1}
+.content-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+.content-side{width:300px;flex-shrink:0;display:flex;flex-direction:column;gap:16px}
+@media(max-width:1100px){.content-side{display:none}}
+@media(max-width:640px){.content{padding:16px;gap:16px}}
 
-  .field input {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 14px;
-    font-size: 14px; font-family: 'DM Sans', sans-serif; font-weight: 300;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-    width: 100%;
-  }
-  .field input::placeholder { color: var(--text-dim); }
-  .field input:hover { border-color: var(--border-hover); }
-  .field input:focus { border-color: var(--gold); background: var(--surface2); box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
-  .field input.error { border-color: var(--red); }
+/* ══ CARDS ══ */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:22px;
+}
+.card-title{font-size:15px;font-weight:600;color:white;margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6}
 
-  .field-icon { position: relative; }
-  .field-icon input { padding-left: 38px; }
-  .field-icon .icon {
-    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-    color: var(--text-dim); font-size: 14px; pointer-events: none;
-  }
+/* ══ STEP 1 — ACCÈS ══ */
+.access-card{
+  display:flex;align-items:center;gap:16px;
+  border:1.5px solid var(--border);border-radius:14px;padding:18px;
+  background:linear-gradient(135deg,rgba(26,26,255,.06),rgba(123,47,255,.06));
+  cursor:pointer;transition:all .3s;
+}
+.access-card:hover,.access-card.sel{
+  border-color:rgba(255,255,255,.3);
+  background:linear-gradient(135deg,rgba(26,26,255,.15),rgba(123,47,255,.1));
+}
+.access-card.sel{border-color:white;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+.acc-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  flex-shrink:0;box-shadow:0 4px 16px rgba(123,47,255,.4);
+}
+.acc-body{flex:1}
+.acc-name{font-size:15px;font-weight:700;color:white;margin-bottom:4px}
+.acc-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.acc-price{
+  font-family:'Bebas Neue',sans-serif;font-size:26px;
+  color:var(--success);letter-spacing:.03em;
+}
+.acc-chk{
+  width:24px;height:24px;border-radius:50%;flex-shrink:0;
+  border:1.5px solid var(--border2);background:var(--bg3);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;
+}
+.access-card.sel .acc-chk{background:white;border-color:white}
+.acc-chk svg{opacity:0;transition:opacity .2s;width:11px;height:11px;stroke:#1A1AFF;stroke-width:3;fill:none}
+.access-card.sel .acc-chk svg{opacity:1}
 
-  /* ── SUMMARY ── */
-  .summary {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.5rem;
-    display: none;
-  }
-  .summary.visible { display: block; }
-  .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); padding: 5px 0; }
-  .summary-row.total { border-top: 0.5px solid var(--border); margin-top: 8px; padding-top: 12px; font-size: 16px; font-weight: 500; color: var(--text); }
-  .summary-row.total .val { color: var(--gold); font-family: 'DM Serif Display', serif; font-size: 20px; }
+/* ══ STEP 2 — OPTIONS ══ */
+.opt-card{
+  display:flex;align-items:flex-start;gap:14px;
+  border:1.5px solid var(--border);border-radius:14px;padding:16px 18px;
+  cursor:pointer;transition:all .3s;position:relative;overflow:hidden;
+  margin-bottom:10px;
+}
+.opt-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.04) 50%,transparent 60%);
+  transform:translateX(-100%);transition:transform .5s;
+}
+.opt-card:hover::before{transform:translateX(100%)}
+.opt-card:hover{border-color:var(--border2);background:var(--card)}
+.opt-card.checked{
+  border-color:rgba(123,47,255,.6);
+  background:rgba(123,47,255,.08);
+}
+.opt-card.checked::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 10% 50%,rgba(123,47,255,.1),transparent 60%);
+}
+.opt-checkbox{
+  width:22px;height:22px;border-radius:6px;flex-shrink:0;margin-top:1px;
+  border:1.5px solid var(--border2);background:var(--bg3);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;position:relative;z-index:1;
+}
+.opt-card.checked .opt-checkbox{
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  border-color:transparent;box-shadow:0 2px 10px rgba(123,47,255,.4);
+}
+.opt-checkbox svg{opacity:0;transition:opacity .2s;width:11px;height:11px;stroke:white;stroke-width:3;fill:none}
+.opt-card.checked .opt-checkbox svg{opacity:1}
+.opt-body{flex:1;position:relative;z-index:1}
+.opt-badge{
+  font-size:9px;letter-spacing:.12em;font-weight:600;text-transform:uppercase;
+  padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:7px;
+}
+.opt-badge.pop{background:rgba(255,184,48,.15);color:var(--warn);border:1px solid rgba(255,184,48,.25)}
+.opt-badge.eco{background:rgba(0,229,160,.1);color:var(--success);border:1px solid rgba(0,229,160,.2)}
+.opt-badge.std{background:var(--card);color:var(--muted);border:1px solid var(--border)}
+.opt-name{font-size:14px;font-weight:600;color:white;margin-bottom:4px}
+.opt-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.opt-price-right{position:relative;z-index:1;text-align:right;flex-shrink:0}
+.opt-price{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--purple2);line-height:1}
+.opt-price sup{font-size:12px;font-family:'Inter',sans-serif;font-weight:400;vertical-align:top;margin-top:5px;display:inline-block;color:var(--muted)}
+.opt-price-note{font-size:10px;color:var(--dim);margin-top:2px;white-space:nowrap}
+.opt-card.checked .opt-price{color:white}
 
-  /* ── CTA ── */
-  .cta-wrap { position: relative; }
-  .cta-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    border-radius: 10px;
-    font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .cta-btn:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
-  .cta-btn:active:not(:disabled) { transform: translateY(0); }
-  .cta-btn:disabled { background: var(--surface3); color: var(--text-dim); cursor: not-allowed; transform: none; }
-  .cta-btn .spinner {
-    width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.2);
-    border-top-color: var(--black); border-radius: 50%;
-    animation: spin 0.7s linear infinite; display: none;
-  }
-  .cta-btn.loading .spinner { display: block; }
-  .cta-btn.loading .btn-text { display: none; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+.info-box{
+  background:rgba(26,26,255,.08);border:1px solid rgba(26,26,255,.2);
+  border-radius:12px;padding:14px 16px;
+  font-size:12px;color:var(--off);line-height:1.7;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.info-box-icon{font-size:16px;flex-shrink:0;margin-top:1px}
 
-  .error-msg { font-size: 12px; color: var(--red); margin-top: 8px; text-align: center; display: none; }
-  .error-msg.visible { display: block; }
+/* ══ STEP 3 — FORM ══ */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.fgrid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;font-weight:500;color:var(--off);letter-spacing:.04em;display:flex;align-items:center;gap:6px}
+.badge-prio{font-size:9px;padding:2px 7px;border-radius:20px;background:rgba(255,184,48,.12);color:var(--warn);border:1px solid rgba(255,184,48,.2)}
+.badge-pub{font-size:9px;padding:2px 7px;border-radius:20px;background:rgba(236,72,153,.1);color:#f472b6;border:1px solid rgba(236,72,153,.2)}
+.field input{
+  background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;
+  padding:11px 14px;font-size:13px;color:white;outline:none;
+  transition:all .25s;
+}
+.field input::placeholder{color:var(--dim)}
+.field input:hover{border-color:var(--border2)}
+.field input:focus{border-color:rgba(123,47,255,.6);background:rgba(123,47,255,.05);box-shadow:0 0 0 3px rgba(123,47,255,.1)}
 
-  /* ── SUCCESS ── */
-  .success-screen {
-    display: none; text-align: center; padding: 4rem 2rem;
-    animation: fadeUp 0.5s ease both;
-  }
-  .success-screen.visible { display: block; }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+/* ══ STEP 4 — RECAP ══ */
+.recap-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;align-items:center}
+.recap-row:last-child{border-bottom:none}
+.recap-row .rl{color:var(--muted)}
+.recap-row .rv{color:white;font-weight:500;text-align:right;max-width:60%}
+.recap-tag{
+  font-size:10px;padding:2px 8px;border-radius:20px;
+  background:rgba(0,229,160,.1);color:var(--success);border:1px solid rgba(0,229,160,.2);
+  display:inline-block;
+}
 
-  .success-icon {
-    width: 64px; height: 64px; border-radius: 50%;
-    background: rgba(76,175,125,0.1); border: 0.5px solid rgba(76,175,125,0.3);
-    margin: 0 auto 1.5rem;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .success-screen h2 { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); margin-bottom: 0.75rem; }
-  .success-screen p { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 380px; margin: 0 auto 0.5rem; }
-  .success-detail {
-    margin-top: 1.5rem;
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    display: inline-block; text-align: left;
-    font-size: 13px; color: var(--text-muted); line-height: 1.8;
-    min-width: 260px;
-  }
-  .success-detail strong { color: var(--gold); font-weight: 500; }
+/* ══ STEP 5 — CONFIRMATION ══ */
+.confirm-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:20px;overflow:hidden;
+  text-align:center;
+}
+.confirm-header{
+  background:linear-gradient(135deg,var(--blue),var(--mid),var(--purple));
+  padding:36px 24px;position:relative;overflow:hidden;
+}
+.confirm-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,.05) 3px,rgba(0,0,0,.05) 4px)}
+.confirm-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.06);top:50%;left:50%;transform:translate(-50%,-50%)}
+.confirm-icon{position:relative;z-index:1;font-size:56px;margin-bottom:12px;display:block;animation:iconBounce .6s cubic-bezier(.23,1,.32,1) both}
+@keyframes iconBounce{0%{transform:scale(0) rotate(-10deg)}60%{transform:scale(1.15) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
+.confirm-title{position:relative;z-index:1;font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:.04em;color:white;margin-bottom:6px}
+.confirm-sub{position:relative;z-index:1;font-size:13px;color:rgba(255,255,255,.6);max-width:320px;margin:0 auto}
+.confirm-body{padding:28px}
+.confirm-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;text-align:left}
+.cstep{display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px}
+.cstep-num{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+}
+.cstep-num.done{background:rgba(0,229,160,.15);color:var(--success);border:1px solid rgba(0,229,160,.3)}
+.cstep-num.pending{background:rgba(255,184,48,.12);color:var(--warn);border:1px solid rgba(255,184,48,.25)}
+.cstep-body{flex:1}
+.cstep-title{font-size:13px;font-weight:600;color:white;margin-bottom:2px}
+.cstep-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.confirm-wa{
+  background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.2);
+  border-radius:12px;padding:14px 16px;margin-bottom:20px;
+  display:flex;align-items:center;gap:12px;text-align:left;
+}
+.confirm-wa svg{width:32px;height:32px;flex-shrink:0}
+.confirm-wa-text{font-size:12px;color:var(--success);line-height:1.6}
+.confirm-wa-text strong{display:block;font-size:14px;margin-bottom:2px}
 
-  /* ── FOOTER ── */
-  .site-footer {
-    border-top: 0.5px solid var(--border);
-    padding: 1.5rem 2rem;
-    text-align: center;
-    font-size: 11px; color: var(--text-dim); letter-spacing: 0.06em;
-  }
-  .site-footer a { color: var(--gold-dim); text-decoration: none; }
+/* ══ BOTTOM BAR ══ */
+.bottom-bar{
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:16px 24px;display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;position:sticky;bottom:0;z-index:10;
+}
+.bb-info{font-size:12px;color:var(--muted)}
+.bb-info strong{display:block;font-size:15px;color:white;font-weight:600;margin-top:2px}
+.bb-actions{display:flex;gap:10px;align-items:center}
 
-  /* ── ANIMATIONS ── */
-  .fade-in { animation: fadeIn 0.6s ease both; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-  .offre-card { animation: fadeIn 0.5s ease both; }
-  .offre-card:nth-child(1) { animation-delay: 0.05s; }
-  .offre-card:nth-child(2) { animation-delay: 0.10s; }
-  .offre-card:nth-child(3) { animation-delay: 0.15s; }
-  .offre-card:nth-child(4) { animation-delay: 0.20s; }
+/* ══ SIDE PANEL ══ */
+.side-panel{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.sp-header{
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  padding:16px 18px;display:flex;align-items:center;gap:12px;
+}
+.sp-hicon{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;
+}
+.sp-htitle{font-size:14px;font-weight:600;color:white}
+.sp-hsub{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px}
+.sp-body{padding:16px}
+.sp-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.sp-row:last-child{border-bottom:none}
+.sp-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.sp-label{font-size:12px;color:var(--muted)}
+.sp-val{font-size:12px;font-weight:500;color:var(--off);margin-left:auto}
+.progress-wrap{margin-top:10px}
+.progress-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px}
+.progress-bar{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(to right,var(--blue),var(--purple));transition:width .8s cubic-bezier(.23,1,.32,1)}
+
+/* ══ MOBILE NAV ══ */
+.mobile-nav{
+  display:none;background:var(--bg2);border-top:1px solid var(--border);
+  padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  justify-content:space-around;
+}
+@media(max-width:768px){.mobile-nav{display:flex}}
+.mnav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 16px;cursor:pointer;color:var(--dim);transition:color .2s}
+.mnav-btn.active{color:var(--purple2)}
+.mnav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5}
+.mnav-label{font-size:10px;font-weight:500}
+
+/* confetti */
+.conf{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.cp{position:absolute;width:8px;height:8px;animation:cf linear forwards}
+@keyframes cf{0%{top:-15px;opacity:1;transform:rotate(0)}100%{top:110vh;opacity:0;transform:rotate(720deg)}}
+
+/* fade */
+.fade-in{animation:fi .35s ease both}
+@keyframes fi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* pulse ring */
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(123,47,255,.4)}100%{box-shadow:0 0 0 12px rgba(123,47,255,0)}}
+.pulse{animation:pulseRing 1.5s ease-out infinite}
+
+@media(max-width:768px){body{padding-bottom:60px}}
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <div class="logo">iCastt<span>Salon du Casting</span></div>
-  <div class="header-date">
-    <strong>14 juin 2026</strong>
-    Paris — Île-de-France
-  </div>
-</header>
+<div class="conf" id="conf"></div>
 
-<section class="hero fade-in">
-  <p class="hero-eyebrow">Inscription officielle</p>
-  <h1>Le Salon du<br><em>Casting Paris</em></h1>
-  <p class="hero-sub">Rencontrez les agences, boostez votre profil et lancez votre carrière dans le monde du casting et de la mode.</p>
-  <div class="hero-meta">
-    <span class="hero-meta-item">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M8 2v3M16 2v3M3 8h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
-      14 juin 2026
-    </span>
-    <span class="hero-meta-item">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-      Paris, Île-de-France
-    </span>
-    <span class="hero-meta-item">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-      10h00 – 19h00
-    </span>
-  </div>
-</section>
+<!-- ══ APP ══ -->
+<div class="app">
 
-<main class="container">
-
-  <div id="form-section">
-
-    <!-- ÉTAPE 1 — OFFRE -->
-    <p class="section-title"><span class="section-num">01</span> Choisir une formule</p>
-
-    <div class="offres-grid">
-
-      <div class="offre-card" data-offre="Acces Decouverte - 0E" data-prix="0" onclick="selectOffre(this)">
-        <div class="offre-check">
-          <svg width="10" height="8" fill="none" stroke="#0D0D0D" stroke-width="2.5" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6"/></svg>
-        </div>
-        <div class="offre-badge free">Entrée libre</div>
-        <div class="offre-name">Accès Découverte</div>
-        <div class="offre-desc">Visitez le salon, rencontrez les agences et assistez aux conférences ouvertes.</div>
-        <div class="offre-price"><span class="free-label">Gratuit</span></div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-logo">
+      <div class="tb-logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
       </div>
-
-      <div class="offre-card" data-offre="Bootcamp - 139E" data-prix="139" onclick="selectOffre(this)">
-        <div class="offre-check">
-          <svg width="10" height="8" fill="none" stroke="#0D0D0D" stroke-width="2.5" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6"/></svg>
-        </div>
-        <div class="offre-badge">Le plus choisi</div>
-        <div class="offre-name">Bootcamp</div>
-        <div class="offre-desc">Formation intensive, coaching individuel et accès aux castings privés du salon.</div>
-        <div class="offre-price"><sup>€</sup>139</div>
-      </div>
-
-      <div class="offre-card" data-offre="Shooting Photo - 89E" data-prix="89" onclick="selectOffre(this)">
-        <div class="offre-check">
-          <svg width="10" height="8" fill="none" stroke="#0D0D0D" stroke-width="2.5" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6"/></svg>
-        </div>
-        <div class="offre-badge" style="visibility:hidden">—</div>
-        <div class="offre-name">Shooting Photo</div>
-        <div class="offre-desc">30 min avec un photographe professionnel + 5 photos retouchées livrées sous 48h.</div>
-        <div class="offre-price"><sup>€</sup>89</div>
-      </div>
-
-      <div class="offre-card" data-offre="Combo Complet - 199E" data-prix="199" onclick="selectOffre(this)">
-        <div class="offre-check">
-          <svg width="10" height="8" fill="none" stroke="#0D0D0D" stroke-width="2.5" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6"/></svg>
-        </div>
-        <div class="offre-badge economy">Économie −29 €</div>
-        <div class="offre-name">Combo Complet</div>
-        <div class="offre-desc">Bootcamp + Shooting photo réunis — le pack idéal pour se lancer.</div>
-        <div class="offre-price"><sup>€</sup>199</div>
-      </div>
-
-    </div>
-
-    <!-- ÉTAPE 2 — COORDONNÉES -->
-    <p class="section-title"><span class="section-num">02</span> Vos coordonnées</p>
-
-    <div class="form-grid">
-      <div class="field">
-        <label>Prénom <span class="req">*</span></label>
-        <input type="text" id="f-prenom" placeholder="Léa" autocomplete="given-name">
-      </div>
-      <div class="field">
-        <label>Nom <span class="req">*</span></label>
-        <input type="text" id="f-nom" placeholder="Dupont" autocomplete="family-name">
-      </div>
-      <div class="field full">
-        <label>Email <span class="req">*</span></label>
-        <input type="email" id="f-email" placeholder="lea@example.com" autocomplete="email">
-      </div>
-      <div class="field">
-        <label>WhatsApp <span class="req">*</span></label>
-        <p class="hint">Prioritaire — contact direct</p>
-        <div class="field-icon">
-          <span class="icon">📱</span>
-          <input type="tel" id="f-wa" placeholder="+33 6 00 00 00 00" autocomplete="tel">
-        </div>
-      </div>
-      <div class="field">
-        <label>Instagram <span class="req">*</span></label>
-        <p class="hint">Votre compte public</p>
-        <div class="field-icon">
-          <span class="icon">@</span>
-          <input type="text" id="f-insta" placeholder="votre_pseudo">
-        </div>
+      <div>
+        <div class="tb-logo-text">iCastt</div>
+        <span class="tb-logo-sub">· SALON DU CASTING ·</span>
       </div>
     </div>
-
-    <!-- RÉCAPITULATIF -->
-    <div class="summary" id="summary">
-      <div class="summary-row"><span>Formule sélectionnée</span><span id="s-offre">—</span></div>
-      <div class="summary-row total"><span>Total</span><span class="val" id="s-total">0 €</span></div>
+    <div class="tb-center">
+      <a class="tb-link active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+        Inscription
+      </a>
+      <a class="tb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 5H9a2 2 0 0 0-2 2v12l3-2 2 2 2-2 3 2V7a2 2 0 0 0-2-2z"/></svg>
+        Mes tickets
+      </a>
+      <a class="tb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Factures
+      </a>
     </div>
-
-    <!-- BOUTON -->
-    <div class="cta-wrap">
-      <button class="cta-btn" id="reserve-btn" onclick="submitForm()" disabled>
-        <div class="spinner"></div>
-        <span class="btn-text">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:6px"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
-          Confirmer ma réservation
-        </span>
-      </button>
-      <p class="error-msg" id="error-msg">Merci de remplir tous les champs et de choisir une formule.</p>
+    <div class="tb-right">
+      <div class="tb-notif">
+        <svg viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14V11a6 6 0 0 0-5-5.92V4a1 1 0 0 0-2 0v1.08A6 6 0 0 0 6 11v3a2 2 0 0 1-.6 1.4L4 17h5m6 0v1a3 3 0 0 1-6 0v-1m6 0H9"/></svg>
+        <div class="tb-notif-dot"></div>
+      </div>
+      <div class="tb-avatar">TC</div>
     </div>
-
-    <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:1rem;letter-spacing:0.04em;">
-      Vos données restent privées et ne sont jamais revendues. Confirmation par email immédiate.
-    </p>
-
   </div>
 
-  <!-- SUCCÈS -->
-  <div class="success-screen" id="success-screen">
-    <div class="success-icon">
-      <svg width="28" height="28" fill="none" stroke="#4CAF7D" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+  <div class="body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sb-event">
+        <div class="sb-event-art">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-5 4-9 9-9s9 4 9 9"/></svg>
+        </div>
+        <div class="sb-event-scan"></div>
+        <div class="sb-event-vig"></div>
+        <div class="sb-event-content">
+          <div class="sb-event-tag">Événement · Figuration & Mode</div>
+          <div class="sb-event-title">Salon du Casting iCastt 2026</div>
+          <div class="sb-event-loc">
+            <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Paris, France · 14 Juin 2026
+          </div>
+        </div>
+      </div>
+
+      <div class="sb-pills">
+        <div class="sb-pill"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Abonné</div>
+        <div class="sb-pill"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/></svg>Y aller</div>
+      </div>
+
+      <div class="sb-sep"></div>
+      <div class="sb-nav">
+        <div class="sb-item" onclick="setSb(this)"><div class="sb-icon" style="background:rgba(255,184,48,.12);font-size:15px">📅</div><span class="sb-label">Programme</span></div>
+        <div class="sb-item" onclick="setSb(this)"><div class="sb-icon" style="background:rgba(0,229,160,.1);font-size:15px">🤝</div><span class="sb-label">Rendez-vous</span></div>
+        <div class="sb-item active" onclick="setSb(this)"><div class="sb-icon" style="background:rgba(26,26,255,.15);font-size:15px">🗺️</div><span class="sb-label">Inscription</span><div class="sb-badge">1</div></div>
+        <div class="sb-item" onclick="setSb(this)"><div class="sb-icon" style="background:rgba(236,72,153,.1);font-size:15px">🎤</div><span class="sb-label">Intervenants</span></div>
+        <div class="sb-item" onclick="setSb(this)"><div class="sb-icon" style="background:rgba(123,47,255,.12);font-size:15px">🏢</div><span class="sb-label">Exposants</span></div>
+        <div class="sb-item" onclick="setSb(this)"><div class="sb-icon" style="background:rgba(255,100,100,.1);font-size:15px">📸</div><span class="sb-label">Shooting</span></div>
+      </div>
     </div>
-    <h2>Réservation confirmée !</h2>
-    <p>Un email de confirmation vous a été envoyé. Montrez-le à l'entrée du salon.</p>
-    <p id="success-wa-msg" style="display:none;color:var(--gold);margin-top:0.5rem;">Notre équipe vous contactera sur WhatsApp très prochainement.</p>
-    <div class="success-detail" id="success-detail"></div>
-  </div>
 
-</main>
+    <!-- MAIN -->
+    <div class="main">
 
-<footer class="site-footer">
-  © 2026 iCastt — Salon du Casting Paris &nbsp;·&nbsp; <a href="#">Mentions légales</a> &nbsp;·&nbsp; <a href="#">Contact</a>
-</footer>
+      <!-- HEADER -->
+      <div class="main-hdr">
+        <button class="hdr-back" onclick="prevStep()">←</button>
+        <div class="hdr-icon">🎫</div>
+        <div class="hdr-text">
+          <div class="hdr-title">Inscription</div>
+          <div class="hdr-sub">Salon du Casting iCastt · 14 Juin 2026 · Paris</div>
+        </div>
+      </div>
+
+      <!-- STEPPER -->
+      <div class="stepper">
+        <div class="step-item">
+          <div class="step-circle" id="sc1">1</div>
+          <div class="step-label" id="sl1">Accès</div>
+        </div>
+        <div class="step-conn" id="cn1"></div>
+        <div class="step-item">
+          <div class="step-circle" id="sc2">2</div>
+          <div class="step-label" id="sl2">Options</div>
+        </div>
+        <div class="step-conn" id="cn2"></div>
+        <div class="step-item">
+          <div class="step-circle" id="sc3">3</div>
+          <div class="step-label" id="sl3">Coordonnées</div>
+        </div>
+        <div class="step-conn" id="cn3"></div>
+        <div class="step-item">
+          <div class="step-circle" id="sc4">4</div>
+          <div class="step-label" id="sl4">Récapitulatif</div>
+        </div>
+      </div>
+
+      <!-- STEPS CONTENT -->
+      <div style="flex:1;overflow-y:auto">
+
+        <!-- ══ STEP 1 — ACCÈS ══ -->
+        <div id="step1" class="fade-in">
+          <div class="content">
+            <div class="content-main">
+              <div class="card">
+                <div class="card-title">Ton accès au salon</div>
+                <div class="card-sub">L'accès Découverte est inclus pour tous. Tu pourras ajouter des options à l'étape suivante.</div>
+                <div class="access-card sel" id="access-entry" onclick="selectAccess(this)">
+                  <div class="acc-icon">🎟️</div>
+                  <div class="acc-body">
+                    <div class="acc-name">Accès Découverte</div>
+                    <div class="acc-desc">Accès au salon toute la journée, rencontre avec les agences et accès aux conférences ouvertes.</div>
+                  </div>
+                  <div class="acc-price">Gratuit</div>
+                  <div class="acc-chk">
+                    <svg viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="info-box">
+                <div class="info-box-icon">💡</div>
+                <div>À l'étape suivante, tu pourras sélectionner des <strong>options premium</strong> (Bootcamp, Shooting photo, Combo). Notre équipe te contactera ensuite pour finaliser et confirmer.</div>
+              </div>
+            </div>
+            <div class="content-side">
+              <div class="side-panel">
+                <div class="sp-header"><div class="sp-hicon">📅</div><div><div class="sp-htitle">iCastt 2026</div><div class="sp-hsub">14–15 Juin · Paris</div></div></div>
+                <div class="sp-body">
+                  <div class="sp-row"><div class="sp-icon" style="background:rgba(26,26,255,.12)">📍</div><span class="sp-label">Lieu</span><span class="sp-val">Paris, France</span></div>
+                  <div class="sp-row"><div class="sp-icon" style="background:rgba(0,229,160,.1)">🕙</div><span class="sp-label">Horaires</span><span class="sp-val">10h – 19h</span></div>
+                  <div class="sp-row"><div class="sp-icon" style="background:rgba(255,184,48,.1)">👥</div><span class="sp-label">Agences</span><span class="sp-val">42 présentes</span></div>
+                  <div class="progress-wrap">
+                    <div class="progress-lbl"><span>Places restantes</span><span>68 / 380</span></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-bar">
+            <div class="bb-info"><span>Étape 1 / 4</span><strong>Accès Découverte — Gratuit</strong></div>
+            <div class="bb-actions">
+              <button class="cine-btn btn-primary" onclick="goStep(2)">
+                Continuer
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ STEP 2 — OPTIONS ══ -->
+        <div id="step2" style="display:none" class="fade-in">
+          <div class="content">
+            <div class="content-main">
+              <div class="card">
+                <div class="card-title">Options disponibles</div>
+                <div class="card-sub">Coche les options qui t'intéressent. Notre équipe te contactera pour valider et confirmer avec toi. Aucun paiement maintenant.</div>
+
+                <div class="opt-card" id="opt1" onclick="toggleOpt(this,'opt1','Bootcamp Formation')">
+                  <div class="opt-checkbox"><svg viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="opt-body">
+                    <div class="opt-badge pop">⭐ Le plus choisi</div>
+                    <div class="opt-name">Bootcamp Formation</div>
+                    <div class="opt-desc">Formation intensive casting + coaching individuel + accès exclusif aux castings privés organisés pendant le salon.</div>
+                  </div>
+                  <div class="opt-price-right">
+                    <div class="opt-price"><sup>€</sup>139</div>
+                    <div class="opt-price-note">À valider avec l'équipe</div>
+                  </div>
+                </div>
+
+                <div class="opt-card" id="opt2" onclick="toggleOpt(this,'opt2','Shooting Photo')">
+                  <div class="opt-checkbox"><svg viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="opt-body">
+                    <div class="opt-badge std">📸 Studio Photo</div>
+                    <div class="opt-name">Shooting Photo Professionnel</div>
+                    <div class="opt-desc">30 min avec un photographe dédié. 5 photos retouchées livrées sous 48h après l'événement.</div>
+                  </div>
+                  <div class="opt-price-right">
+                    <div class="opt-price"><sup>€</sup>89</div>
+                    <div class="opt-price-note">À valider avec l'équipe</div>
+                  </div>
+                </div>
+
+                <div class="opt-card" id="opt3" onclick="toggleOpt(this,'opt3','Combo Bootcamp + Shooting')">
+                  <div class="opt-checkbox"><svg viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="opt-body">
+                    <div class="opt-badge eco">Économie −29 €</div>
+                    <div class="opt-name">Combo Complet — Bootcamp + Shooting</div>
+                    <div class="opt-desc">Le pack idéal pour se lancer. Bootcamp et Shooting réunis au meilleur tarif.</div>
+                  </div>
+                  <div class="opt-price-right">
+                    <div class="opt-price"><sup>€</sup>199</div>
+                    <div class="opt-price-note">À valider avec l'équipe</div>
+                  </div>
+                </div>
+
+                <div class="opt-card" id="opt4" onclick="toggleOpt(this,'opt4','Plateforme de Casting 6 mois')">
+                  <div class="opt-checkbox"><svg viewBox="0 0 12 10"><path d="M1 5l3.5 3.5L11 1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="opt-body">
+                    <div class="opt-badge std">🌐 Digital</div>
+                    <div class="opt-name">Accès Plateforme de Casting</div>
+                    <div class="opt-desc">Profil visible auprès des agences partenaires pendant 6 mois après l'événement.</div>
+                  </div>
+                  <div class="opt-price-right">
+                    <div class="opt-price"><sup>€</sup>49</div>
+                    <div class="opt-price-note">À valider avec l'équipe</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-box">
+                <div class="info-box-icon">📞</div>
+                <div><strong style="color:white;display:block;margin-bottom:3px">Pas de paiement immédiat</strong>
+                Tu coches ce qui t'intéresse. Notre closeuse te rappelle sur WhatsApp pour finaliser et encaisser. Simple et rapide.</div>
+              </div>
+            </div>
+
+            <div class="content-side">
+              <div class="side-panel">
+                <div class="sp-header" style="background:linear-gradient(135deg,var(--purple),var(--mid))"><div class="sp-hicon">✅</div><div><div class="sp-htitle">Options cochées</div><div class="sp-hsub" id="side-opts-count">Aucune pour l'instant</div></div></div>
+                <div class="sp-body" id="side-opts-list"><div style="font-size:12px;color:var(--dim);padding:8px 0">Coche des options pour les voir apparaître ici.</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-bar">
+            <div class="bb-info"><span id="s2-bottom-info">Étape 2 / 4</span><strong id="s2-bottom-opts">Aucune option cochée</strong></div>
+            <div class="bb-actions">
+              <button class="cine-btn btn-ghost" onclick="goStep(1)">← Retour</button>
+              <button class="cine-btn btn-primary" onclick="goStep(3)">
+                Continuer
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ STEP 3 — COORDONNÉES ══ -->
+        <div id="step3" style="display:none" class="fade-in">
+          <div class="content">
+            <div class="content-main">
+              <div class="card">
+                <div class="card-title">Tes coordonnées</div>
+                <div class="card-sub">Ton WhatsApp est prioritaire — notre équipe t'y contactera pour valider tes options et finaliser.</div>
+                <div class="fgrid">
+                  <div class="field"><label>Prénom *</label><input type="text" id="fp" placeholder="Léa" oninput="chk3()"></div>
+                  <div class="field"><label>Nom *</label><input type="text" id="fn" placeholder="Dupont" oninput="chk3()"></div>
+                  <div class="field full"><label>Email *</label><input type="email" id="fe" placeholder="lea@example.com" oninput="chk3()"></div>
+                  <div class="field"><label>WhatsApp * <span class="badge-prio">Prioritaire</span></label><input type="tel" id="fw" placeholder="+33 6 00 00 00 00" oninput="chk3()"></div>
+                  <div class="field"><label>Instagram * <span class="badge-pub">Compte public</span></label><input type="text" id="fi" placeholder="@ton_pseudo" oninput="chk3()"></div>
+                </div>
+              </div>
+            </div>
+            <div class="content-side">
+              <div class="side-panel">
+                <div class="sp-header"><div class="sp-hicon">📋</div><div><div class="sp-htitle">Récapitulatif rapide</div><div class="sp-hsub">Ce que tu as sélectionné</div></div></div>
+                <div class="sp-body">
+                  <div class="sp-row"><span class="sp-label">Accès</span><span class="sp-val" style="color:var(--success)">Gratuit ✓</span></div>
+                  <div id="side-recap-opts"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-bar">
+            <div class="bb-info"><span>Étape 3 / 4</span><strong>Presque terminé !</strong></div>
+            <div class="bb-actions">
+              <button class="cine-btn btn-ghost" onclick="goStep(2)">← Retour</button>
+              <button class="cine-btn btn-primary" id="next3" onclick="goStep(4)" disabled>
+                Voir le récapitulatif
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ STEP 4 — RÉCAP ══ -->
+        <div id="step4" style="display:none" class="fade-in">
+          <div class="content">
+            <div class="content-main">
+              <div class="card">
+                <div class="card-title">Récapitulatif final</div>
+                <div class="card-sub">Vérifie tout avant de confirmer ton inscription.</div>
+                <div class="recap-row"><span class="rl">Accès salon</span><span class="rv"><span class="recap-tag">Gratuit</span></span></div>
+                <div class="recap-row"><span class="rl">Options choisies</span><span class="rv" id="r-opts">Aucune</span></div>
+                <div class="recap-row"><span class="rl">Prénom / Nom</span><span class="rv" id="r-name">—</span></div>
+                <div class="recap-row"><span class="rl">Email</span><span class="rv" id="r-email">—</span></div>
+                <div class="recap-row"><span class="rl">WhatsApp</span><span class="rv" id="r-wa">—</span></div>
+                <div class="recap-row"><span class="rl">Instagram</span><span class="rv" id="r-insta">—</span></div>
+                <div class="recap-row"><span class="rl">Date</span><span class="rv">14 Juin 2026 · 10h00</span></div>
+                <div class="recap-row"><span class="rl">Lieu</span><span class="rv">Paris, Île-de-France</span></div>
+              </div>
+              <div class="info-box">
+                <div class="info-box-icon">📞</div>
+                <div>Si tu as coché des options, notre équipe te contactera <strong style="color:white">rapidement sur WhatsApp</strong> pour confirmer et procéder au règlement. L'accès Découverte est automatiquement validé.</div>
+              </div>
+            </div>
+            <div class="content-side">
+              <div class="side-panel">
+                <div class="sp-header" style="background:linear-gradient(135deg,var(--purple),var(--mid))"><div class="sp-hicon">💬</div><div><div class="sp-htitle">Prochaine étape</div><div class="sp-hsub">Notre équipe vous contacte</div></div></div>
+                <div class="sp-body" style="font-size:12px;color:var(--muted);line-height:1.8">
+                  <div style="margin-bottom:6px">✅ Inscription confirmée immédiatement</div>
+                  <div style="margin-bottom:6px">📱 WhatsApp dans les 24h si options cochées</div>
+                  <div>🎫 Billet envoyé par email à la validation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-bar">
+            <div class="bb-info"><span>Étape 4 / 4</span><strong>Prêt à confirmer ?</strong></div>
+            <div class="bb-actions">
+              <button class="cine-btn btn-ghost" onclick="goStep(3)">← Modifier</button>
+              <button class="cine-btn btn-success pulse" id="confirm-btn" onclick="confirm()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                Confirmer mon inscription
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ STEP 5 — CONFIRMATION ══ -->
+        <div id="step5" style="display:none" class="fade-in">
+          <div class="content" style="justify-content:center">
+            <div style="max-width:560px;width:100%">
+              <div class="confirm-card">
+                <div class="confirm-header">
+                  <div class="confirm-glow"></div>
+                  <span class="confirm-icon">🎉</span>
+                  <div class="confirm-title">Tu es inscrit !</div>
+                  <p class="confirm-sub">Ton inscription au Salon du Casting iCastt 2026 est confirmée.</p>
+                </div>
+                <div class="confirm-body">
+                  <div class="confirm-steps">
+                    <div class="cstep">
+                      <div class="cstep-num done">✓</div>
+                      <div class="cstep-body">
+                        <div class="cstep-title">Accès Découverte confirmé</div>
+                        <div class="cstep-desc">Un email de confirmation a été envoyé à <strong id="conf-email" style="color:var(--off)">—</strong></div>
+                      </div>
+                    </div>
+                    <div class="cstep" id="cstep-opts" style="display:none">
+                      <div class="cstep-num pending">⏳</div>
+                      <div class="cstep-body">
+                        <div class="cstep-title">Options en attente de validation</div>
+                        <div class="cstep-desc" id="conf-opts-list">—</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="confirm-wa" id="conf-wa" style="display:none">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <div class="confirm-wa-text">
+                      <strong>Notre équipe te contacte bientôt</strong>
+                      Un membre de l'équipe iCastt va te contacter sur WhatsApp au <strong id="conf-wa-num" style="color:white">—</strong> pour valider et confirmer tes options.
+                    </div>
+                  </div>
+                  <button class="cine-btn btn-primary" style="width:100%;justify-content:center;padding:14px" onclick="reset()">
+                    Nouvelle inscription
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /steps content -->
+    </div><!-- /main -->
+  </div><!-- /body -->
+</div><!-- /app -->
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav">
+  <div class="mnav-btn active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="mnav-label">Accueil</span></div>
+  <div class="mnav-btn"><svg viewBox="0 0 24 24"><path d="M15 5H9a2 2 0 0 0-2 2v12l3-2 2 2 2-2 3 2V7a2 2 0 0 0-2-2z"/></svg><span class="mnav-label">Tickets</span></div>
+  <div class="mnav-btn"><svg viewBox="0 0 24 24"><path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14V11a6 6 0 0 0-5-5.92V4a1 1 0 0 0-2 0v1.08A6 6 0 0 0 6 11v3a2 2 0 0 1-.6 1.4L4 17h5m6 0v1a3 3 0 0 1-6 0v-1m6 0H9"/></svg><span class="mnav-label">Notifs</span></div>
+  <div class="mnav-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg><span class="mnav-label">Compte</span></div>
+</div>
 
 <script>
-  // ══════════════════════════════════════════════
-  // ⚠️  REMPLACE CETTE URL PAR TON URL APPS SCRIPT
-  const SCRIPT_URL = 'REMPLACE_PAR_TON_URL_APPS_SCRIPT';
-  // ══════════════════════════════════════════════
+// ══════════════════════════════════════════
+// ⚠️  REMPLACE PAR TON URL APPS SCRIPT
+const SCRIPT_URL = 'REMPLACE_PAR_TON_URL_APPS_SCRIPT';
+// ══════════════════════════════════════════
 
-  let selectedOffer = null;
-  let selectedPrix = 0;
+let curStep = 1;
+const checkedOpts = new Set();
 
-  function selectOffre(card) {
-    document.querySelectorAll('.offre-card').forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-    selectedOffer = card.dataset.offre;
-    selectedPrix = parseInt(card.dataset.prix);
-    document.getElementById('s-offre').textContent = card.querySelector('.offre-name').textContent;
-    document.getElementById('s-total').textContent = selectedPrix === 0 ? 'Gratuit' : selectedPrix + ' €';
-    document.getElementById('summary').classList.add('visible');
-    checkForm();
+/* ── SIDEBAR ── */
+function setSb(el){
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── ACCÈS SELECTION ── */
+function selectAccess(el){el.classList.toggle('sel')}
+
+/* ── OPTIONS ── */
+function toggleOpt(card, id, name){
+  card.classList.toggle('checked');
+  if(checkedOpts.has(id)) checkedOpts.delete(id);
+  else checkedOpts.set ? checkedOpts.add(id) : checkedOpts.add(id);
+  updateSideOpts();
+  updateStep2Bottom();
+}
+// Use Map for label lookup
+const optLabels = {
+  opt1:{name:'Bootcamp Formation',price:'139 €'},
+  opt2:{name:'Shooting Photo',price:'89 €'},
+  opt3:{name:'Combo Complet',price:'199 €'},
+  opt4:{name:'Plateforme Casting',price:'49 €'},
+};
+function updateSideOpts(){
+  const list = document.getElementById('side-opts-list');
+  const count = document.getElementById('side-opts-count');
+  if(checkedOpts.size===0){
+    count.textContent='Aucune pour l\'instant';
+    list.innerHTML='<div style="font-size:12px;color:var(--dim);padding:8px 0">Coche des options pour les voir ici.</div>';
+    return;
+  }
+  count.textContent=checkedOpts.size+' option(s) cochée(s)';
+  list.innerHTML='';
+  checkedOpts.forEach(id=>{
+    const o=optLabels[id];
+    const row=document.createElement('div');
+    row.className='sp-row';
+    row.innerHTML=`<span class="sp-label" style="flex:1">${o.name}</span><span class="sp-val" style="color:var(--purple2)">${o.price}</span>`;
+    list.appendChild(row);
+  });
+}
+function updateStep2Bottom(){
+  const n = checkedOpts.size;
+  document.getElementById('s2-bottom-opts').textContent = n===0 ? 'Aucune option cochée (tu peux passer)' : n+' option(s) cochée(s) — notre équipe valide avec toi';
+}
+
+/* ── FORM CHECK ── */
+function chk3(){
+  const ok=['fp','fn','fe','fw','fi'].every(id=>document.getElementById(id).value.trim());
+  const btn=document.getElementById('next3');
+  btn.disabled=!ok;btn.style.opacity=ok?'1':'0.4';
+}
+
+/* ── STEPPER ── */
+function updateStepper(){
+  for(let i=1;i<=4;i++){
+    const sc=document.getElementById('sc'+i);
+    const sl=document.getElementById('sl'+i);
+    sc.className='step-circle';sl.className='step-label';
+    if(i<curStep){sc.classList.add('done');sc.textContent='✓';sl.classList.add('done');}
+    else if(i===curStep){sc.classList.add('active');sc.textContent=i;sl.classList.add('active');}
+    else{sc.textContent=i;}
+    if(i<4){const cn=document.getElementById('cn'+i);cn.classList.toggle('done',i<curStep);}
+  }
+}
+
+/* ── FILL STEP 4 ── */
+function fillRecap(){
+  const opts=[];
+  checkedOpts.forEach(id=>opts.push(optLabels[id].name));
+  document.getElementById('r-opts').textContent=opts.length?opts.join(', '):'Accès Découverte uniquement';
+  document.getElementById('r-name').textContent=document.getElementById('fp').value+' '+document.getElementById('fn').value;
+  document.getElementById('r-email').textContent=document.getElementById('fe').value;
+  document.getElementById('r-wa').textContent=document.getElementById('fw').value;
+  document.getElementById('r-insta').textContent=document.getElementById('fi').value;
+  // side recap
+  const el=document.getElementById('side-recap-opts');
+  if(checkedOpts.size>0){
+    el.innerHTML='';
+    checkedOpts.forEach(id=>{
+      const o=optLabels[id];
+      el.innerHTML+=`<div class="sp-row"><span class="sp-label">${o.name}</span><span class="sp-val" style="color:var(--purple2)">${o.price}</span></div>`;
+    });
+  }else{el.innerHTML='<div style="font-size:12px;color:var(--dim);padding:6px 0">Aucune option cochée</div>';}
+}
+
+/* ── NAVIGATION ── */
+function goStep(n){
+  [1,2,3,4,5].forEach(i=>{
+    const el=document.getElementById('step'+i);
+    if(el){el.style.display=i===n?'block':'none';if(i===n){el.classList.remove('fade-in');void el.offsetWidth;el.classList.add('fade-in');}}
+  });
+  curStep=n;
+  updateStepper();
+  if(n===4)fillRecap();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function prevStep(){if(curStep>1)goStep(curStep-1)}
+
+/* ── CONFIRM ── */
+async function confirm(){
+  const p=document.getElementById('fp').value.trim();
+  const n=document.getElementById('fn').value.trim();
+  const e=document.getElementById('fe').value.trim();
+  const w=document.getElementById('fw').value.trim();
+  const i=document.getElementById('fi').value.trim();
+  const opts=[];checkedOpts.forEach(id=>opts.push(optLabels[id].name));
+
+  const btn=document.getElementById('confirm-btn');
+  btn.textContent='Envoi en cours…';btn.disabled=true;
+
+  const offre=opts.length?'Options: '+opts.join(' + '):'Acces Decouverte - 0E';
+
+  try{
+    await fetch(SCRIPT_URL,{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prenom:p,nom:n,email:e,whatsapp:w,instagram:i,offre})
+    });
+  }catch(err){}
+
+  // Fill confirmation screen
+  document.getElementById('conf-email').textContent=e;
+  document.getElementById('conf-wa-num').textContent=w;
+  if(opts.length>0){
+    document.getElementById('cstep-opts').style.display='flex';
+    document.getElementById('conf-opts-list').textContent=opts.join(', ')+' — en attente de confirmation par WhatsApp.';
+    document.getElementById('conf-wa').style.display='flex';
   }
 
-  function checkForm() {
-    const ok = selectedOffer &&
-      document.getElementById('f-prenom').value.trim() &&
-      document.getElementById('f-nom').value.trim() &&
-      document.getElementById('f-email').value.trim() &&
-      document.getElementById('f-wa').value.trim() &&
-      document.getElementById('f-insta').value.trim();
-    document.getElementById('reserve-btn').disabled = !ok;
+  // Show step 5 (no stepper update needed)
+  [1,2,3,4,5].forEach(i=>{const el=document.getElementById('step'+i);if(el)el.style.display=i===5?'block':'none';});
+  confetti();
+}
+
+/* ── RESET ── */
+function reset(){
+  checkedOpts.clear();
+  document.querySelectorAll('.opt-card').forEach(c=>c.classList.remove('checked'));
+  ['fp','fn','fe','fw','fi'].forEach(id=>document.getElementById(id).value='');
+  goStep(1);
+  updateSideOpts();updateStep2Bottom();
+}
+
+/* ── CONFETTI ── */
+function confetti(){
+  const cols=['#1A1AFF','#7B2FFF','#00E5A0','#FFB830','#FF6EB4','#fff'];
+  const box=document.getElementById('conf');
+  for(let i=0;i<80;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');c.className='cp';
+      c.style.cssText=`left:${Math.random()*100}vw;background:${cols[~~(Math.random()*cols.length)]};border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${1.8+Math.random()*1.5}s;animation-delay:${Math.random()*.3}s`;
+      box.appendChild(c);setTimeout(()=>c.remove(),3200);
+    },i*20);
   }
+}
 
-  document.querySelectorAll('input').forEach(i => i.addEventListener('input', checkForm));
-
-  async function submitForm() {
-    const prenom = document.getElementById('f-prenom').value.trim();
-    const nom = document.getElementById('f-nom').value.trim();
-    const email = document.getElementById('f-email').value.trim();
-    const wa = document.getElementById('f-wa').value.trim();
-    const insta = document.getElementById('f-insta').value.trim();
-
-    if (!selectedOffer || !prenom || !nom || !email || !wa || !insta) {
-      document.getElementById('error-msg').classList.add('visible');
-      return;
-    }
-    document.getElementById('error-msg').classList.remove('visible');
-
-    const btn = document.getElementById('reserve-btn');
-    btn.classList.add('loading');
-    btn.disabled = true;
-
-    const formData = { prenom, nom, email, whatsapp: wa, instagram: insta, offre: selectedOffer };
-
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-    } catch (e) {
-      // no-cors: fetch réussit quand même côté Apps Script
-    }
-
-    const payant = selectedPrix > 0;
-    document.getElementById('success-detail').innerHTML =
-      `<strong>Formule :</strong> ${document.querySelector('.offre-card.selected .offre-name').textContent}<br>` +
-      `<strong>Nom :</strong> ${prenom} ${nom}<br>` +
-      `<strong>Email :</strong> ${email}<br>` +
-      `<strong>WhatsApp :</strong> ${wa}`;
-    if (payant) document.getElementById('success-wa-msg').style.display = 'block';
-
-    document.getElementById('form-section').style.display = 'none';
-    document.getElementById('success-screen').classList.add('visible');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+// INIT
+chk3();
+updateStep2Bottom();
 </script>
-
 </body>
 </html>
